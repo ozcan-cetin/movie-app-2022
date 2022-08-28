@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {useNavigate} from "react-router-dom"
 import { AuthContext } from '../context/AuthContext'
-import { toastSuccessNotify } from '../helpers/ToastNotify'
+import { toastSuccessNotify, toastWarnNotify } from '../helpers/ToastNotify'
 
 const Login = () => {
     const [email, setEmail] = useState("")
@@ -12,8 +12,18 @@ const Login = () => {
 
     const navigate = useNavigate()
 
+    function emailValid(email){
+      let pattern=/^[\w]+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+       // return email.match(pattern) ? true:false
+       return pattern.test(email)
+    }
+    
+
     const handleSubmit = (e) => {
-        e.preventDefault()
+      e.preventDefault()
+      if(!emailValid(email)){
+        toastWarnNotify('Please type a valid email address')
+      }else{
         const id = new Date().getTime();
         const newuser = { id: id, email: email, password:password };
         setUsers([...users, newuser]);
@@ -21,8 +31,10 @@ const Login = () => {
         setPassword("")
         navigate("/home", {state:email})
         toastSuccessNotify('Logged in successfully')
+      }
+       
     }
-
+console.log(emailValid(email))
   return (
     <div className='row'>
         <form className="col-10 col-md-5 col-lg-4 mx-auto mt-5 loginForm" onSubmit={handleSubmit}>

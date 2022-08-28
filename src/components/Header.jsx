@@ -1,6 +1,6 @@
 import React from "react";
 
-const Header = ({handleSubmit, setSearchTerm}) => {
+const Header = ({handleSubmit, searchTerm, setSearchTerm}) => {
   return (
     <div>
       <form
@@ -10,6 +10,7 @@ const Header = ({handleSubmit, setSearchTerm}) => {
         <input
           type="search"
           className="fs-4 px-2 rounded-2 searchMovie"
+          value={searchTerm}
           placeholder="Search a movie..."
           autoFocus
           onChange={(e) => setSearchTerm(e.target.value)}

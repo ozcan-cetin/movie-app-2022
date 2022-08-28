@@ -5,7 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
 import MovieCard from "../components/MovieCard";
 import Header from "../components/Header";
-import { toastWarnNotify } from "../helpers/ToastNotify";
+import { toastErrorNotify, toastWarnNotify } from "../helpers/ToastNotify";
 
 const API_KEY = process.env.REACT_APP_TMDB_KEY;
 const FEATURED_API = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}`;
@@ -27,14 +27,21 @@ const Home = () => {
       // console.log(data);
       setMovies(data.results);
       setIsLoading(false);
+
     } catch (error) {
-      console.log(error);
+      // console.log(error);
+      toastErrorNotify(error.message)
+      // toastErrorNotify(error.name)
     }
   };
 
   useEffect(() => {
     getMovies(FEATURED_API);
   }, []);
+
+  // useEffect(()=>{
+  //   getMovies(SEARCH_API+searchTerm);
+  // },[searchTerm])
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -48,7 +55,7 @@ const Home = () => {
   return (
     <div>
       <Navbar email={state} />
-      <Header handleSubmit={handleSubmit} setSearchTerm={setSearchTerm} />
+      <Header handleSubmit={handleSubmit} searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <div className="movieContainer row m-auto container mt-3">
         {movies?.map((movie) => (
           <MovieCard key={movie.id} movie={movie} email={state} />

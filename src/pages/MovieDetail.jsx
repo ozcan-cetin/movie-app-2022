@@ -4,6 +4,7 @@ import { Link, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import VideoSection from "../components/VideoSection";
 import Header from "../components/Header";
+import { toastErrorNotify } from "../helpers/ToastNotify";
 
 const MovieDetail = () => {
   const { id} = useParams();
@@ -37,7 +38,7 @@ const MovieDetail = () => {
     axios
       .get(videoUrl)
       .then((res) => setVideoKey(res.data.results[0].key))
-      .catch((err) => console.log(err));
+      .catch((err) => toastErrorNotify(err.message));
   }, [movieDetailBaseUrl, videoUrl]);
   return (
     <div>
